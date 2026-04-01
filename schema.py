@@ -86,7 +86,7 @@ def create_schema():
             window_label        TEXT,               -- optional label for the rolling window (e.g., '2023_pre_masters')
             window_start        DATE,               -- start date of the stats window;
             window_end          DATE,               -- end date of the stats window; inclusive
-            CHECK (window_start <= window_end)
+            CHECK (window_start <= window_end),
             
             -- Strokes Gained
             sg_total            REAL,
