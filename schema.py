@@ -9,7 +9,7 @@ The database file will be created at: data/pga_predictor.db
 import sqlite3
 import os
 
-DB_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "pga_predictor.db")
+DB_PATH = os.path.join(os.path.dirname(__file__), ".", "data", "pga_predictor.db")
 
 
 def get_connection():
