@@ -34,21 +34,24 @@ def parse_dates(date_str, year):
         datetime.strptime(end_date_str, "%d %b %Y").date()
     )
 
-def get_pga_tour_schedule_for_year(year: int) -> list[dict]:
+def get_pga_tour_schedule_for_year(year: int, output_path: Path) -> list[dict]:
     """
     Retrieves PGA Tour schedule for specified year.
 
     :param year: the year to retrieve schedule information for
+    :param output_path: the file path to save resulting csv files to
+
     :return: a list of dictionaries containing information for each tournament in the given year
     """
-    output_path = Path(f"data/pga_tour_results/")
 
     url = f"https://www.espn.co.uk/golf/schedule/_/season/{year}"
 
     headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
                              "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"}
 
-    res = requests.get(url, headers=headers)
+    res = requests.get(url, headers=headers, timeout=10)
+    if res.status_code != 200:
+        print(f"❌ Failed to fetch {year}: {res.status_code}")
 
     soup = BeautifulSoup(res.text, "html.parser")
     rows = soup.select("tbody.Table__TBODY tr.Table__TR")
@@ -85,6 +88,7 @@ def get_pga_tour_schedule_for_year(year: int) -> list[dict]:
         })
 
     save_to_csv(tournament_data, output_path, year)
+    return tournament_data
 
 
 def save_to_csv(tournaments: list[dict], output_path: Path, year: int) -> None:
@@ -103,7 +107,8 @@ def save_to_csv(tournaments: list[dict], output_path: Path, year: int) -> None:
         writer.writerows(tournaments)
     print(f"\n💾 Saved {len(tournaments)} rows for season {year} → {file_path}")
 
+output_path = Path(f"data/pga_tour_results/")
 
 for year in range(2002, 2026):
-    get_pga_tour_schedule_for_year(year)
-    time.sleep(random.randint(1, 5))
+    get_pga_tour_schedule_for_year(year, output_path)
+    time.sleep(random.uniform(1.2, 4.7))
