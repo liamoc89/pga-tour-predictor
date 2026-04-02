@@ -86,20 +86,19 @@ def create_schema():
             window_label        TEXT,               -- optional label for the rolling window (e.g., '2023_pre_masters')
             window_start        DATE,               -- start date of the stats window;
             window_end          DATE,               -- end date of the stats window; inclusive
-            CHECK (window_start <= window_end),
             
             -- Strokes Gained
             sg_total            REAL,
-            sg_ott              REAL,               -- off the tee
-            sg_app              REAL,               -- approach
-            sg_arg              REAL,               -- around the green
-            sg_putt             REAL,               -- putting
+            sg_ott              REAL,               
+            sg_app              REAL,               
+            sg_arg              REAL,               
+            sg_putt             REAL,               
 
             -- Ball striking
             driving_distance    REAL,
             driving_accuracy_pct REAL,
-            gir_pct             REAL,               -- greens in regulation %
-            proximity_100_125   REAL,               -- avg proximity to hole (yards)
+            gir_pct             REAL,               
+            proximity_100_125   REAL,               
             proximity_125_150   REAL,
             proximity_150_175   REAL,
 
@@ -109,7 +108,7 @@ def create_schema():
             par5_scoring_avg    REAL,
 
             -- Context
-            events_played       INTEGER,            -- events in this window
+            events_played       INTEGER,            
 
             created_at          DATETIME DEFAULT CURRENT_TIMESTAMP,
             UNIQUE (player_id, window_start, window_end)
